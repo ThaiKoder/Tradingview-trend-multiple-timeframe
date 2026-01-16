@@ -1,0 +1,53 @@
+// This Pine Script® code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © ShearJoy
+
+//@version=6
+indicator("Multiple Trend Williams Fractal", overlay=true, max_labels_count=500)
+
+
+// --- INPUTS pour les EMA (conditions) ---
+len1 = input.int(20, "EMA1")
+len2 = input.int(30, "EMA2")
+len3 = input.int(40, "EMA3")
+len4 = input.int(50, "EMA4")
+len5 = input.int(60, "EMA5")
+
+col_1 = input.color(color.lime, "Couleur Haussière")
+col_2 = input.color(color.purple, "Couleur Baissière")
+
+
+// --- CONDITIONS MANUELLES ---
+
+// calcul EMA
+ema1 = ta.ema(close, len1)
+ema2 = ta.ema(close, len2)
+ema3 = ta.ema(close, len3)
+ema4 = ta.ema(close, len4)
+ema5 = ta.ema(close, len5)
+
+// true si EMA1 haussière
+cond1 = ema1 > ema1[1] 
+cond2 = ema2 > ema2[1]
+cond3 = ema3 > ema3[1]
+cond4 = ema4 > ema4[1]
+cond5 = ema5 > ema5[1]
+
+// --- TABLEAU 1 COLONNE x 5 LIGNES ---
+if barstate.islast
+    dash = table.new(position.top_right, 2, 5)
+
+    // Text
+    dash.cell(0,0, "EMA1 - " + str.tostring(len1), text_color=color.white)
+    dash.cell(0,1, "EMA2 - " + str.tostring(len2), text_color=color.white)
+    dash.cell(0,2, "EMA3 - " + str.tostring(len3), text_color=color.white)
+    dash.cell(0,3, "EMA4 - " + str.tostring(len4), text_color=color.white)
+    dash.cell(0,4, "EMA5 - " + str.tostring(len5), text_color=color.white)
+
+    // Modification manuelle selon condition
+    dash.cell(1,0, cond1 ? "🢁" : "🢃", text_color = cond1 ? color.lime : color.purple, bgcolor = cond1 ? color.new(color.lime, 80) : color.new(color.purple, 80))
+    dash.cell(1,1, cond2 ? "🢁" : "🢃", text_color = cond2 ? color.lime : color.purple, bgcolor = cond2 ? color.new(color.lime, 70) : color.new(color.purple, 70))
+    dash.cell(1,2, cond3 ? "🢁" : "🢃", text_color = cond3 ? color.lime : color.purple, bgcolor = cond3 ? color.new(color.lime, 60) : color.new(color.purple, 60))
+    dash.cell(1,3, cond4 ? "🢁" : "🢃", text_color = cond4 ? color.lime : color.purple, bgcolor = cond4 ? color.new(color.lime, 50) : color.new(color.purple, 50))
+    dash.cell(1,4, cond5 ? "🢁" : "🢃", text_color = cond5 ? color.lime : color.purple, bgcolor = cond5 ? color.new(color.lime, 40) : color.new(color.purple, 40))
+
+    
